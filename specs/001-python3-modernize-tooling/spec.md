@@ -5,6 +5,12 @@
 **Status**: Draft
 **Input**: User description: "Let's remove Python 2.7 compatibility and go full Python 3, targeting Python 3.10 as minimum version. Priorities: 1) switch to pyproject.toml and uv 2) get tests running. The old suite uses nose as the runner and flake8 as linter, but we should switch to pytest and ruff."
 
+## Clarifications
+
+### Session 2026-01-07
+
+- Q: Should setup.py be deleted entirely or kept as a minimal shim? → A: Delete setup.py and setup.cfg entirely (clean break, modern standard)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Developer Runs Tests with Modern Tooling (Priority: P1)
@@ -80,7 +86,7 @@ The continuous integration pipeline should use the new tooling to run tests and 
 
 ### Functional Requirements
 
-- **FR-001**: Project MUST use `pyproject.toml` as the sole build configuration file, replacing `setup.py` and `setup.cfg`.
+- **FR-001**: Project MUST use `pyproject.toml` as the sole build configuration file; `setup.py` and `setup.cfg` MUST be deleted entirely.
 - **FR-002**: Project MUST specify Python 3.10 as the minimum required version in pyproject.toml.
 - **FR-003**: Project MUST remove all Python 2 compatibility code including the `future` and `six` library dependencies.
 - **FR-004**: Project MUST use pytest as the test runner, replacing nose.
@@ -107,7 +113,7 @@ The continuous integration pipeline should use the new tooling to run tests and 
 - **SC-003**: `uv run ruff check` completes without errors on the codebase.
 - **SC-004**: Package installs successfully with `uv pip install -e .` and all 10 console scripts are available.
 - **SC-005**: No Python 2 compatibility libraries (six, future, mock) remain in dependencies.
-- **SC-006**: The setup.py file is removed (or contains only a shim for legacy tools if needed).
+- **SC-006**: Both `setup.py` and `setup.cfg` files are deleted from the repository.
 - **SC-007**: tox runs successfully with pytest and ruff on Python 3.10+.
 
 ## Assumptions
