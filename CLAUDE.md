@@ -71,3 +71,10 @@ See `config-example.ini` for all options.
 
 - Follow PEP8 (enforced via flake8/hacking)
 - Coverage requirement: 90% minimum (excluding tests)
+
+## Active Technologies
+- Python 3.10+ (minimum 3.10, tested on 3.10, 3.11, 3.12) + docopts (CLI argument parsing), existing stdlib dependencies (001-python3-modernize-tooling)
+- N/A (CLI tool, no persistent storage) (001-python3-modernize-tooling)
+
+## Recent Changes
+- 001-python3-modernize-tooling: Added Python 3.10+ (minimum 3.10, tested on 3.10, 3.11, 3.12) + docopts (CLI argument parsing), existing stdlib dependencies
