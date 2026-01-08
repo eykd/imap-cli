@@ -9,28 +9,30 @@ imap-cli is a command line interface and Python API for interacting with IMAP em
 ## Common Commands
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt -r test-requirements.txt
+# Install dependencies (with dev tools)
+uv pip install -e ".[dev]"
 
-# Run all tests with tox (includes py2, py3, pep8, docs)
-tox
+# Run all tests with tox (py310, py311, py312, lint, docs)
+uv run tox
 
 # Run tests for a specific environment
-tox -e py3
-tox -e pep8
+uv run tox -e py311
+uv run tox -e lint
 
-# Run tests directly with nose (with coverage)
-coverage run $(which nosetests) -v
-coverage report --fail-under=90 --include=*imap_cli* --omit=*tests*
+# Run tests directly with pytest (with coverage)
+uv run pytest --cov=imap_cli --cov-report=term-missing
 
 # Run a single test file
-nosetests imap_cli/tests/test_config.py -v
+uv run pytest imap_cli/tests/test_config.py -v
 
 # Run a single test method
-nosetests imap_cli/tests/test_config.py:ConfigTest.test_default_config -v
+uv run pytest imap_cli/tests/test_config.py::ConfigTest::test_default_config -v
 
-# Lint with flake8
-flake8
+# Lint with ruff
+uv run ruff check .
+
+# Auto-fix lint issues
+uv run ruff check --fix .
 
 # Build documentation
 cd docs && sphinx-build -W . _build/html
@@ -41,7 +43,7 @@ cd docs && sphinx-build -W . _build/html
 ### CLI Entry Points
 
 - `imapcli` - Bash wrapper script that dispatches to subcommands
-- Subcommands map to individual Python modules via setup.py entry_points:
+- Subcommands map to individual Python modules via pyproject.toml scripts:
   - `imap-cli-status` → `imap_cli/summary.py`
   - `imap-cli-list` → `imap_cli/list_mail.py`
   - `imap-cli-search` → `imap_cli/search.py`
@@ -69,5 +71,12 @@ See `config-example.ini` for all options.
 
 ## Code Style
 
-- Follow PEP8 (enforced via flake8/hacking)
+- Follow PEP8 (enforced via ruff)
 - Coverage requirement: 90% minimum (excluding tests)
+- Python 3.10+ required
+
+## Active Technologies
+- Python 3.10+ (minimum 3.10, tested on 3.10, 3.11, 3.12)
+- docopt for CLI argument parsing
+- pytest for testing, ruff for linting
+- uv for package management

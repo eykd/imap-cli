@@ -1,0 +1,96 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "Imap-CLI"
+version = "0.8"
+description = "Command line interface and Python API for interacting with IMAP email accounts"
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Romain Soufflet", email = "romain@soufflet.io" }
+]
+keywords = ["imap", "cli", "email", "mail"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications :: Email",
+    "Topic :: Utilities",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "docopt>=0.6.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+    "tox>=4.0",
+    "sphinx>=7.0",
+]
+
+[project.scripts]
+imap-api = "imap_cli.scripts.imap_api:main"
+imap-cli-copy = "imap_cli.copy:main"
+imap-cli-delete = "imap_cli.delete:main"
+imap-cli-flag = "imap_cli.flag:main"
+imap-cli-list = "imap_cli.list_mail:main"
+imap-cli-read = "imap_cli.fetch:main"
+imap-cli-search = "imap_cli.search:main"
+imap-cli-status = "imap_cli.summary:main"
+imap-notify = "imap_cli.scripts.imap_notify:main"
+imap-shell = "imap_cli.scripts.imap_shell:main"
+
+[project.urls]
+Homepage = "http://gentux.github.io/imap-cli/"
+Repository = "https://github.com/gentux/imap-cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["imap_cli"]
+
+[tool.pytest.ini_options]
+testpaths = ["imap_cli/tests"]
+addopts = "-v --cov=imap_cli --cov-report=term-missing"
+python_files = ["test_*.py"]
+python_classes = ["*Test"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["imap_cli"]
+omit = [
+    "imap_cli/tests/*",
+    "imap_cli/copy.py",
+    "imap_cli/delete.py",
+    "imap_cli/scripts/imap_api.py",
+    "imap_cli/scripts/imap_notify.py",
+    "imap_cli/scripts/imap_shell.py",
+]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"imap_cli/tests/*" = ["E501"]

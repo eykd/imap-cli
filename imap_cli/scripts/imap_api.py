@@ -12,7 +12,6 @@ import re
 import sys
 from wsgiref import simple_server
 
-import six
 from webob.dec import wsgify
 from webob.exc import status_map
 
@@ -101,9 +100,8 @@ def router(req):
                 if getattr(req, 'urlvars', None) is None:
                     req.urlvars = {}
                 req.urlvars.update(dict(
-                    (name,
-                     value.decode('utf-8') if value is not None else None)
-                    for name, value in match.groupdict().iteritems()
+                    (name, value)
+                    for name, value in match.groupdict().items()
                 ))
                 req.urlvars.update(vars)
                 req.script_name += req.path_info[:match.end()]
@@ -122,7 +120,7 @@ def main():
 
     for routing in routings:
         methods, regex, app = routing[:3]
-        if isinstance(methods, six.string_types):
+        if isinstance(methods, str):
             methods = (methods,)
         vars = routing[3] if len(routing) >= 4 else {}
         routes.append((methods, re.compile(regex), app, vars))

@@ -10,7 +10,7 @@ import itertools
 import logging
 import os
 
-from six.moves import configparser
+import configparser
 
 from imap_cli import const
 

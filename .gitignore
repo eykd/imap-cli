@@ -52,3 +52,20 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment files
+.env
+.env.*
+
+# Modern tool caches
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# IDE
+.vscode/
+.idea/
