@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-"""Use IMAP CLI to gt a summary of IMAP account state."""
+"""Use IMAP CLI to get a summary of IMAP account state."""
 
 
 import logging
@@ -11,14 +11,19 @@ import sys
 import time
 
 import docopt
-import pynotify
 
 import imap_cli
 from imap_cli import config
 
+try:
+    from plyer import notification
+    HAS_PLYER = True
+except ImportError:
+    HAS_PLYER = False
+
 
 app_name = os.path.splitext(os.path.basename(__file__))[0]
-usage = """Usage: imap-cli-notifier [options] <directories>...
+usage = """Usage: imap-notify [options] <directories>...
 
 Options:
     -d, --delay=<delay>         Delay (in seconds) between notifications
@@ -33,6 +38,8 @@ Copyright (C) 2014 Romain Soufflet
 License MIT
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
+
+Requires: pip install imap-cli[notify]
 """
 log = logging.getLogger(app_name)
 
@@ -44,7 +51,11 @@ def main():
         level=logging.DEBUG if args['--verbose'] else logging.WARNING,
         stream=sys.stdout,
     )
-    pynotify.init(app_name)
+
+    if not HAS_PLYER:
+        log.error('plyer is required for notifications. '
+                  'Install with: pip install imap-cli[notify]')
+        return 1
 
     connection_config = config.new_context_from_file(args['--config-file'],
                                                      section='imap')
@@ -55,9 +66,7 @@ def main():
     except ValueError:
         log.error('Wrong value for options "delay"')
         return 1
-    format_str = args['--format'] or u' '.join([
-        u'{recent:<3} new mails in ',
-        u'{directory} ({count} total)'])
+    format_str = args['--format'] or u'{recent:<3} new mails in {directory} ({count} total)'
 
     imap_account = imap_cli.connect(**connection_config)
 
@@ -72,9 +81,12 @@ def main():
                         status['recent'] != '0'):
                     notifications.append(format_str.format(**status))
             if len(notifications) > 0:
-                notifier = pynotify.Notification("IMAP Notify",
-                                                 u'\n'.join(notifications))
-                notifier.show()
+                notification.notify(
+                    title="IMAP Notify",
+                    message='\n'.join(notifications),
+                    app_name=app_name,
+                    timeout=10,
+                )
         time.sleep(1)
 
     return 0

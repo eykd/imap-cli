@@ -38,6 +38,12 @@ dev = [
     "tox>=4.0",
     "sphinx>=7.0",
 ]
+api = [
+    "webob>=1.8",
+]
+notify = [
+    "plyer>=2.0",
+]
 
 [project.scripts]
 imap-api = "imap_cli.scripts.imap_api:main"
