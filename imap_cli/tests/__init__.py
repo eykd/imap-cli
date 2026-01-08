@@ -4,9 +4,7 @@
 """Imaplib IMAP4_SSL mocking class"""
 
 
-from builtins import bytes
-
-import mock
+from unittest.mock import Mock
 
 
 example_email_content_unicode = u'\r\n'.join([
@@ -23,7 +21,7 @@ example_email_content_unicode = u'\r\n'.join([
 example_email_content = bytes(example_email_content_unicode, 'utf-8')
 
 
-class ImapConnectionMock(mock.Mock):
+class ImapConnectionMock(Mock):
     fail = False
     error = False
     state = None
