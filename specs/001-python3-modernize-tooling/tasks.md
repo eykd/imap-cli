@@ -116,11 +116,11 @@
 - [x] T039 [P] [US3] Verify imap-cli-flag --help works
 - [x] T040 [P] [US3] Verify imap-cli-copy --help works
 - [x] T041 [P] [US3] Verify imap-cli-delete --help works
-- [x] T042 [P] [US3] Verify imap-api --help works (requires webob optional dependency)
-- [x] T043 [P] [US3] Verify imap-notify --help works (requires pynotify, not Python 3 compatible)
+- [x] T042 [P] [US3] Verify imap-api --help works (with `[api]` optional dependency: webob)
+- [x] T043 [P] [US3] Verify imap-notify --help works (with `[notify]` optional dependency: plyer, migrated from pynotify)
 - [x] T044 [P] [US3] Verify imap-shell --help works
 
-**Checkpoint**: User Story 3 complete - 8/10 console scripts functional (2 have optional/legacy dependency issues)
+**Checkpoint**: User Story 3 complete - all 10 console scripts functional
 
 ---
 
@@ -200,7 +200,7 @@ Within Phase 7 (Cleanup):
 | SC-001: Tests pass with pytest | ✅ PASS | 49 tests pass |
 | SC-002: Coverage ≥ 90% | ✅ PASS | 91.93% coverage |
 | SC-003: ruff check passes | ✅ PASS | All checks passed |
-| SC-004: All 10 console scripts work | ⚠️ 8/10 | imap-api (needs webob), imap-notify (needs pynotify - not Py3 compatible) |
+| SC-004: All 10 console scripts work | ✅ PASS | All 10 work (imap-api via `[api]`, imap-notify via `[notify]` optional deps) |
 | SC-005: No six/future/mock in deps | ✅ PASS | Verified with grep |
 | SC-006: setup.py/setup.cfg deleted | ✅ PASS | Deleted |
 | SC-007: tox runs successfully | ✅ PASS | py311 and lint pass |
